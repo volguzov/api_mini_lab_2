@@ -56,13 +56,13 @@
       </div>
       <div class="row">
         <div class="input-field col s12">
-          <input id="password" type="password" class="validation password">
+          <input id="password" type="password" class="validate" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}">
           <label for="password">Password</label>
         </div>
       </div>
       <div class="row">
         <div class="input-field col s12">
-          <input id="password-repeat" type="password" class="validation password">
+          <input id="password-repeat" type="password" required>
           <label for="password-repeat">Repeat password</label>
         </div>
       </div>
@@ -82,6 +82,44 @@
   <script src="https://www.google-analytics.com/analytics.js" async></script>
   <script type="module" src="js/main.js"></script>
 </div>
+
+
+<script>
+  const inputs = Array.from(document.querySelectorAll('.validate'));
+  const signUpBtn = document.getElementById('sign_up_btn');
+
+  const checkValidity = () => {
+    const allValid = inputs.every(input => input.validity.valid);
+    const allFilled = inputs.every(input => input.value.trim() !== '');
+
+    signUpBtn.disabled = !(allValid && allFilled);
+  };
+
+  inputs.forEach(input => {
+    input.addEventListener('input', checkValidity);
+  });
+
+  const password = document.getElementById('password');
+  const repeatPassword = document.getElementById('password-repeat');
+  const repeatPasswordInput = document.getElementById('password-repeat');
+
+  const checkPasswordMatch = () => {
+    if (password.value === repeatPassword.value) {
+      repeatPasswordInput.classList.remove('invalid');
+      repeatPasswordInput.classList.add('valid');
+    } else {
+      repeatPasswordInput.classList.remove('valid');
+      repeatPasswordInput.classList.add('invalid');
+    }
+  };
+
+  repeatPassword.addEventListener('input', checkPasswordMatch);
+
+  // проверка при загрузке страницы
+  checkValidity();
+
+</script>
+
 </body>
 
 </html>
